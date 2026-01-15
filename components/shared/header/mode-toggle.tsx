@@ -1,4 +1,5 @@
 "use client";
+
 import { useTheme } from "next-themes";
 import {
   DropdownMenu,
@@ -7,12 +8,21 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuCheckboxItem,
-} from "../../ui/dropdown-menu";
-import { Button } from "../../ui/button";
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
 import { Sun, Moon, SunMoon } from "lucide-react";
+import { useEffect, useState } from "react";
 
 const ModeToggle = () => {
   const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
 
   return (
     <DropdownMenu>

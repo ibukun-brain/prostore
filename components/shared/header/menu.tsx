@@ -1,6 +1,4 @@
-"use client";
-
-import { Button } from "../../ui/button";
+import { Button } from "@/components/ui/button";
 
 import {
   Sheet,
@@ -8,14 +6,11 @@ import {
   SheetDescription,
   SheetTitle,
   SheetTrigger,
-} from "../../ui/sheet";
-import { EllipsisVertical, ShoppingCart, UserIcon } from "lucide-react";
-import dynamic from "next/dynamic";
+} from "@/components/ui/sheet";
+import { EllipsisVertical, ShoppingCart } from "lucide-react";
 import Link from "next/link";
-
-const ModeToggle = dynamic(() => import("./mode-toggle"), {
-  ssr: false,
-});
+import UserButton from "./user-button";
+import ModeToggle from "./mode-toggle";
 
 const Menu = () => {
   return (
@@ -27,11 +22,7 @@ const Menu = () => {
             <ShoppingCart /> Cart
           </Link>
         </Button>
-        <Button asChild>
-          <Link href="/sign-in">
-            <UserIcon /> Sign In
-          </Link>
-        </Button>
+        <UserButton />
       </nav>
       <nav className="md:hidden">
         <Sheet>
@@ -46,11 +37,7 @@ const Menu = () => {
                 <ShoppingCart /> Cart
               </Link>
             </Button>
-            <Button asChild>
-              <Link href="/sign-in">
-                <UserIcon /> Sign In
-              </Link>
-            </Button>
+            <UserButton />
             <SheetDescription></SheetDescription>
           </SheetContent>
         </Sheet>
