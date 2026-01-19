@@ -7,12 +7,13 @@ import { getMyCart } from "./cart.actions";
 import { insertOrderSchema } from "../validators";
 import { prisma } from "@/db/prisma";
 import { Prisma } from "../generated/prisma/client";
-import { CartItem, PaymentResult } from "@/types";
+import { CartItem, PaymentResult, ShippingAddress } from "@/types";
 import { convertToPlainObject } from "../utils";
 import { paypal } from "../paypal";
 import { revalidatePath } from "next/cache";
 import { PAGE_SIZE } from "../constants";
 import { formatError } from "../utils";
+import { sendPurchaseReceipt } from "@/email";
 
 // Create order and create the order items
 export async function createOrder() {
@@ -160,7 +161,7 @@ export async function approvePayPalOrder(
   orderId: string,
   data: {
     orderID: string;
-  }
+  },
 ) {
   try {
     const order = await prisma.order.findFirst({
@@ -206,7 +207,7 @@ export async function approvePayPalOrder(
 }
 
 //Update order to paid
-async function updateOrderToPaid({
+export async function updateOrderToPaid({
   orderId,
   paymentResult,
 }: {
@@ -260,6 +261,14 @@ async function updateOrderToPaid({
   });
 
   if (!updatedOrder) throw new Error("Order not found");
+
+  sendPurchaseReceipt({
+    order: {
+      ...updatedOrder,
+      shippingAddress: updatedOrder.shippingAddress as ShippingAddress,
+      paymentResult: updatedOrder.paymentResult as PaymentResult,
+    },
+  });
 }
 
 // Get user's orders
@@ -343,11 +352,25 @@ export async function getOrderSummary() {
 export async function getAllOrders({
   limit = PAGE_SIZE,
   page,
+  query,
 }: {
   limit?: number;
   page: number;
+  query: string;
 }) {
+  const queryFilter: Prisma.OrderWhereInput =
+    query && query !== "all"
+      ? {
+          user: {
+            name: {
+              contains: query,
+              mode: "insensitive",
+            } as Prisma.StringFilter,
+          },
+        }
+      : {};
   const data = await prisma.order.findMany({
+    where: { ...queryFilter },
     orderBy: { createdAt: "desc" },
     take: limit,
     skip: (page - 1) * limit,
@@ -407,12 +430,12 @@ export async function deliverOrder(orderId: string) {
       },
     });
 
-    revalidatePath(`/order/${orderId}`)
+    revalidatePath(`/order/${orderId}`);
 
     return {
       success: true,
-      message: "Order has been marked as delivered"
-    }
+      message: "Order has been marked as delivered",
+    };
   } catch (error) {
     return { success: false, message: formatError(error) };
   }

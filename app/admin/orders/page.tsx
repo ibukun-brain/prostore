@@ -22,16 +22,16 @@ export const metadata: Metadata = {
 const AdminOrdersPage = async ({
   searchParams,
 }: {
-  searchParams: Promise<{ page: string }>;
+  searchParams: Promise<{ page: string, query: string }>;
 }) => {
-  const { page = 1 } = await searchParams;
+  const { page = 1, query: searchText } = await searchParams;
   const session = await auth();
   if (session?.user?.role !== "admin")
     throw new Error("User is not authorized");
 
   const orders = await getAllOrders({
     page: Number(page),
-    limit: 3,
+    query: searchText 
   });
   return (
     <div className="space-y-2">
@@ -42,6 +42,7 @@ const AdminOrdersPage = async ({
             <TableRow>
               <TableHead>ID</TableHead>
               <TableHead>DATE</TableHead>
+              <TableHead>BUYER</TableHead>
               <TableHead>TOTAL</TableHead>
               <TableHead>PAID</TableHead>
               <TableHead>DELIVERED</TableHead>
@@ -54,6 +55,9 @@ const AdminOrdersPage = async ({
                 <TableCell>{formatId(order.id)}</TableCell>
                 <TableCell>
                   {formatDateTime(order.createdAt).dateTime}
+                </TableCell>
+                <TableCell>
+                  {order.user.name}
                 </TableCell>
                 <TableCell>{formatCurrency(order.totalPrice)}</TableCell>
                 <TableCell>

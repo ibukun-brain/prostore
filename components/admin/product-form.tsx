@@ -5,15 +5,19 @@ import { insertProductSchema, updateProductSchema } from "@/lib/validators";
 import { Product } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { Controller, SubmitHandler, useForm, useWatch } from "react-hook-form";
 import { toast } from "sonner";
 import z from "zod";
 import slugify from "slugify";
 import { Field, FieldError, FieldGroup, FieldLabel } from "../ui/field";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
 import { createProduct, updateProduct } from "@/lib/actions/product.action";
+import { UploadButton } from "@/lib/uploadthing";
+import { Card, CardContent } from "../ui/card";
+import Image from "next/image";
 
 const ProductForm = ({
   type,
@@ -67,6 +71,12 @@ const ProductForm = ({
       }
     }
   };
+
+  // const images = form.watch(["images", "isFeatured", "banner"]);
+  const images = useWatch({ control: form.control, name: "images" });
+  const isFeatured = useWatch({ control: form.control, name: "isFeatured" });
+  const banner = useWatch({ control: form.control, name: "banner" });
+
   return (
     <form
       method="POST"
@@ -209,8 +219,106 @@ const ProductForm = ({
           />
         </FieldGroup>
       </div>
-      <div className="upload-field flex flex-col gap-5">{/* Images */}</div>
-      <div className="upload-field">{/* IsFeatured */}</div>
+      <div className="upload-field flex flex-col gap-5">
+        <FieldGroup>
+          <Controller
+            name="images"
+            control={form.control}
+            render={() => (
+              <Field>
+                <FieldLabel htmlFor="form-rhf-demo-description">
+                  Images
+                </FieldLabel>
+                <Card>
+                  <CardContent className="space-y-2 mt-2 min-h-48">
+                    <div className="flex-start space-x-2">
+                      {images.map((image: string) => (
+                        <Image
+                          key={image}
+                          src={image}
+                          alt="product image"
+                          className="w-20 h-20 object-cover object-center rounded-sm"
+                          width={100}
+                          height={100}
+                        />
+                      ))}
+                      <UploadButton
+                        endpoint="imageUploader"
+                        onClientUploadComplete={(res: { url: string }[]) => {
+                          form.setValue("images", [...images, res[0].url]);
+                        }}
+                        onUploadError={(error: Error) => {
+                          toast.error(`ERROR! ${error.message}`, {
+                            style: {
+                              background: "var(--destructive)",
+                              color: "#fff",
+                            } as React.CSSProperties,
+                          });
+                        }}
+                      />
+                    </div>
+                  </CardContent>
+                </Card>
+              </Field>
+            )}
+          />
+        </FieldGroup>
+      </div>
+      <div className="upload-field">
+        <FieldGroup>
+          <Controller
+            name="isFeatured"
+            control={form.control}
+            render={({ field }) => (
+              <Card>
+                <CardContent className="space-y-2 mt-2">
+                  <FieldGroup data-slot="checkbox-group">
+                    <Field orientation="horizontal">
+                      <Checkbox
+                        id="form-rhf-checkbox-responses"
+                        name={field.name}
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                      <FieldLabel
+                        htmlFor="form-rhf-checkbox-responses"
+                        className="font-normal"
+                      >
+                        Is Featured?
+                      </FieldLabel>
+                    </Field>
+                  </FieldGroup>
+                  {isFeatured && banner && (
+                    <Image
+                      src={banner}
+                      alt="banner image"
+                      className="w-full object-cover object-center rounded-sm"
+                      width={1920}
+                      height={689}
+                    />
+                  )}
+                  {isFeatured && !banner && (
+                    <UploadButton
+                      endpoint="imageUploader"
+                      onClientUploadComplete={(res: { url: string }[]) => {
+                        form.setValue("banner", res[0].url);
+                      }}
+                      onUploadError={(error: Error) => {
+                        toast.error(`ERROR! ${error.message}`, {
+                          style: {
+                            background: "var(--destructive)",
+                            color: "#fff",
+                          } as React.CSSProperties,
+                        });
+                      }}
+                    />
+                  )}
+                </CardContent>
+              </Card>
+            )}
+          />
+        </FieldGroup>
+      </div>
       <FieldGroup>
         <Controller
           name="description"
