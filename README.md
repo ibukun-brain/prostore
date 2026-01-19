@@ -6,6 +6,8 @@ Prostore is a full-featured, modern e-commerce application built with Next.js 15
 Home<img width="1919" height="1079" alt="cart" src="https://github.com/user-attachments/assets/1c593329-5b20-49e4-aaaf-6b9116f2d2cc" />
 Product Detail<img width="1907" height="1079" alt="detail" src="https://github.com/user-attachments/assets/18f6d468-412e-4a69-8400-5b88c7dad5c2" />
 Cart <img width="1919" height="1073" alt="home" src="https://github.com/user-attachments/assets/fecf13ba-9714-4ab5-baa6-91b2ef4edd30" />
+![prostoreworkflow-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/e38306df-8e23-4c64-9a98-77884a577ca5)
+
 
 ## 🚀 Tech Stack
 
