@@ -53,7 +53,7 @@ const DealCountDown = () => {
 
   if (!time) {
     return (
-      <section className="grid grid-cols-1 md:grid-cols-3 my-20">
+      <section className="grid grid-cols-1 md:grid-cols-3 my-10">
         <div className="gap-2 md:col-span-2 justify-center">
           <h3 className="text-3xl font-bold">Loading Countdown</h3>
         </div>
@@ -68,7 +68,7 @@ const DealCountDown = () => {
     time.seconds === 0
   ) {
     return (
-      <section className="grid grid-cols-1 md:grid-cols-3 my-20">
+      <section className="grid grid-cols-1 md:grid-cols-3 my-10">
         <div className="gap-2 md:col-span-2 justify-center">
           <h3 className="text-3xl font-bold">Deal Has Ended</h3>
           <p>
@@ -94,7 +94,7 @@ const DealCountDown = () => {
   }
 
   return (
-    <section className="grid grid-cols-1 md:grid-cols-3 my-20">
+    <section className="grid grid-cols-1 md:grid-cols-3 my-10">
       <div className="gap-2 md:col-span-2 justify-center">
         <h3 className="text-3xl font-bold">Deal Of The Month</h3>
         <p>
