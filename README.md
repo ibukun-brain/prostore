@@ -1,36 +1,144 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Prostore - Modern E-Commerce Platform
 
-## Getting Started
+Prostore is a full-featured, modern e-commerce application built with Next.js 15+, React 19, TypeScript, and Tailwind CSS. It features a robust architecture with PostgreSQL utilizing Prisma ORM, ensuring a seamless and scalable shopping experience.
 
-First, run the development server:
+## Images
+
+
+
+## 🚀 Tech Stack
+
+- **Framework:** [Next.js 15 (App Router)](https://nextjs.org/)
+- **Language:** [TypeScript](https://www.typescriptlang.org/)
+- **Styling:** [Tailwind CSS](https://tailwindcss.com/) & [Shadcn UI](https://ui.shadcn.com/)
+- **Database:** [PostgreSQL](https://www.postgresql.org/)
+- **ORM:** [Prisma](https://www.prisma.io/)
+- **Authentication:** [NextAuth.js (v5)](https://authjs.dev/)
+- **State Management:** React Hooks & Context
+- **Payments:** [Stripe](https://stripe.com/) & [PayPal](https://developer.paypal.com/)
+- **Validations:** [Zod](https://zod.dev/)
+- **Email:** [Resend](https://resend.com/) & [React Email](https://react.email/)
+- **Uploads:** [UploadThing](https://uploadthing.com/)
+
+## ✨ Key Features
+
+- **Storefront:**
+  - Modern, responsive landing page with featured products and carousel.
+  - Comprehensive product listing with pagination and filters.
+  - Detailed product pages with images, descriptions, and related items.
+  - Real-time product search functionality.
+  - Shopping cart with persistent state.
+  - Secure checkout process with multiple payment gateways (Stripe, PayPal).
+  - User order history and tracking.
+  - Product reviews and ratings system.
+  
+- **Authentication:**
+  - Secure user registration and login using NextAuth v5.
+  - Credential-based and OAuth provider support.
+  - Role-based access control (Admin vs. Customer).
+
+- **Admin Dashboard:**
+  - Overview of sales, orders, and user statistics.
+  - Product management (Create, Read, Update, Delete).
+  - Order management and status updates (Paid, Delivered).
+  - User management.
+
+- **Utilities:**
+  - **Dark Mode:** Built-in theme switcher.
+  - **Image Uploads:** Drag-and-drop image uploading via UploadThing.
+  - **Email Notifications:** Transactional emails for order confirmations and updates using Resend.
+
+## 🛠️ Getting Started
+
+Follow these steps to set up the project locally.
+
+### Prerequisites
+
+- [Node.js](https://nodejs.org/) (v18 or higher)
+- [PostgreSQL](https://www.postgresql.org/) database
+- A package manager (npm, yarn, pnpm, or bun)
+
+### Installation
+
+1. **Clone the repository:**
+   ```bash
+   git clone <repository-url>
+   cd prostore
+   ```
+
+2. **Install dependencies:**
+   ```bash
+   npm install
+   # or
+   yarn install
+   # or
+   pnpm install
+   ```
+
+3. **Environment Setup:**
+   Create a `.env` file in the root directory copying the keys from `.env.local` or `.env.example`. You will need to configure:
+   - Database connection string (`DATABASE_URL`)
+   - NextAuth secret and URL
+   - Payment gateway keys (Stripe/PayPal)
+   - UploadThing credentials
+   - Resend API key
+
+   Example `.env` structure:
+   ```env
+   DATABASE_URL="postgresql://user:password@localhost:5432/prostore"
+   AUTH_SECRET="your-super-secret-key"
+   NEXT_PUBLIC_APP_URL="http://localhost:3000"
+   # Add other provider keys here
+   ```
+
+4. **Database Migration:**
+   Initialize the database schema using Prisma:
+   ```bash
+   npx prisma generate
+   npx prisma migrate dev --name init
+   ```
+
+### Running the App
+
+Start the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📂 Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `app/`: Contains the Next.js App Router pages, layouts, and API routes.
+  - `(root)/`: Main storefront layout and pages.
+  - `(auth)/`: Authentication related pages.
+  - `admin/`: Admin dashboard routes.
+  - `api/`: Backend API endpoints.
+- `components/`: Reusable UI components (buttons, inputs, etc.) and feature-specific components.
+- `lib/`: Utility functions, helper classes, and server actions.
+- `db/`: Database connection and seed scripts.
+- `prisma/`: Prisma schema file (`schema.prisma`) and migrations.
+- `types/`: Global TypeScript type definitions.
+- `public/`: Static assets.
+- `email/`: React Email templates.
 
-## Learn More
+## 📜 Scripts
 
-To learn more about Next.js, take a look at the following resources:
+| Script | Description |
+|---|---|
+| `npm run dev` | Starts the development server |
+| `npm run build` | Builds the application for production |
+| `npm run start` | Starts the production server |
+| `npm run lint` | Runs ESLint to identify code issues |
+| `npm run test` | Runs Jest tests |
+| `npm run postinstall` | Generates Prisma Client (runs automatically on install) |
+| `npm run email` | Starts the email development server |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🤝 Contributing
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Contributions are welcome! Please feel free to submit a Pull Request to improve the functionality or design.
 
-## Deploy on Vercel
+## 📄 License
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This project is licensed under the MIT License.
